@@ -20,4 +20,9 @@ describe "calculate reading time" do
     words = ("words " * 300)
     expect(calculate_reading_time(words)).to eq 2
   end
+
+  it "returns 25 when five thousands words are in" do
+    words = ("word " * 5000)
+    expect(calculate_reading_time(words)).to eq 25
+  end
 end

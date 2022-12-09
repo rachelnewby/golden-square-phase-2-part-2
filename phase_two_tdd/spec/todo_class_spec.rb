@@ -31,5 +31,23 @@ describe Todo do
       chore.complete("make bed")
       expect(chore.print_list).to eq "wash clothes, walk the dog"
     end
+    it "will check the list of chores and remove what we ask it to remove" do
+      chore = Todo.new
+      chore.add("make bed")
+      chore.add("wash clothes")
+      chore.add("walk the dog")
+      chore.complete("make bed")
+      chore.complete("walk the dog")
+      expect(chore.print_list).to eq "wash clothes"
+    end
+  end
+  context "managing user errors" do
+    it "will return a string if a chore is not present when user requests removal" do
+      chore = Todo.new
+      chore.add("make bed")
+      chore.add("wash clothes")
+      chore.add("walk the dog")
+      expect(chore.complete("take the bin out")).to eq "Chore doesn't exist"
+    end
   end
 end

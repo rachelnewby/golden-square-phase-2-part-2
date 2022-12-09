@@ -8,7 +8,7 @@ class Todo
   end
 
   def print_list
-    return @tasks.join(", ")
+    @tasks.empty? ? "No chores to print" : @tasks.join(", ")
   end
 
   def complete(remove)

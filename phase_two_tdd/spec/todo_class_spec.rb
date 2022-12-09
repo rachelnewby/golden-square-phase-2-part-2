@@ -49,5 +49,10 @@ describe Todo do
       chore.add("walk the dog")
       expect(chore.complete("take the bin out")).to eq "Chore doesn't exist"
     end
+
+    it "will return a string if no chores are present to print" do
+      chore = Todo.new
+      expect(chore.print_list).to eq "No chores to print"
+    end
   end
 end

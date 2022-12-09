@@ -1,4 +1,4 @@
-require_relative '../lib/reading_time'
+require 'reading_time'
 
 describe "calculate reading time" do
   it "returns zero when an empty string is passed" do

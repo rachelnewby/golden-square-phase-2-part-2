@@ -11,7 +11,10 @@ class TodoList
   def incomplete
     # Returns all non-done todos
     return [] if @list.empty?
-    return @list.map(&:task).join(", ")
+    return @list.reject(&:done?).map(&:task).join(", ")
+    # First all instances where done? is true are rejected.
+    # Then we map the rest to their task strings.
+    # Then we join the task strings with a comma and space
   end
  
   def complete

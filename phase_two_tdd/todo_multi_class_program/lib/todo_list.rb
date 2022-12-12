@@ -1,13 +1,17 @@
 class TodoList
   def initialize
+    @list = []
   end
 
   def add(todo) # todo is an instance of Todo
     # Returns nothing
+    @list << todo
   end
 
   def incomplete
     # Returns all non-done todos
+    return [] if @list.empty?
+    return @list.map(&:task).join(", ")
   end
  
   def complete

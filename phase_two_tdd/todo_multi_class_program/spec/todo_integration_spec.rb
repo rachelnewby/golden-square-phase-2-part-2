@@ -38,4 +38,17 @@ describe "Integration tests for TodoList and Todo" do
       expect(chore_list.complete).to eq "make bed, walk the dog"
     end
   end
+
+  context "When some instances are complete" do
+    it "#complete returns the todo.tasks which are complete in a string" do
+    chore_list = TodoList.new
+    chore_1 = Todo.new("make bed")
+    chore_2 = Todo.new("walk the dog")
+    chore_list.add(chore_1)
+    chore_list.add(chore_2)
+    chore_list.give_up!
+    chore_list.add(Todo.new("take bins out"))
+    expect(chore_list.complete).to eq "make bed, walk the dog"
+    end
+  end
 end

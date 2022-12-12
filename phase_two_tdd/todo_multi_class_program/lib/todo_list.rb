@@ -19,10 +19,13 @@ class TodoList
  
   def complete
     # Returns all complete todos
+    return [] if @list.empty?
+    return @list.select(&:done?).map(&:task).join(", ")
   end
 
   def give_up!
     # Marks all todos as complete
     #(Could iterate over each in the array and call the mark_done! method)
+    @list.each(&:mark_done!)
   end
 end

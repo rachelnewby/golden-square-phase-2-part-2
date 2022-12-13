@@ -14,6 +14,8 @@ class Todo
   end
 
   def done?
+    # Returns true if the task is done
+    # Otherwise, false
     @complete
   end
 end

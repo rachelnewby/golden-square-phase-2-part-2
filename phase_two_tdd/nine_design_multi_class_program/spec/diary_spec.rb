@@ -1,4 +1,4 @@
-require 'diary'
+require "diary"
 
 describe Diary do
   context "initally" do

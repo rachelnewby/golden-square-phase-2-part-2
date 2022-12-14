@@ -200,4 +200,19 @@ describe "Diary Integration test" do
       expect(phonebook.print).to eq ["07987654321", "07123456789"]
     end
   end
+
+  context "When number called on diary_entry instance that doesn't have content" do
+    it "#print excludes that output" do
+      entry_1 = DiaryEntry.new(101222, "hello diary this happened today")
+      entry_2 = DiaryEntry.new(111222, "I met Dani today")
+      contact_1 = entry_1.number
+      contact_2 = entry_2.number
+      phonebook = ContactList.new
+      phonebook.add(contact_1)
+      phonebook.add(contact_2)
+      expect(phonebook.print).to eq []
+    end
+  end
 end
+
+

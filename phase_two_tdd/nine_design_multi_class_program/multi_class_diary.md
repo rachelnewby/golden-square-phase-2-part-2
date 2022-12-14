@@ -55,52 +55,52 @@ Contacts ---> Numbers to add
  │          entries           │             │  contents                 │
  │                            │             │                           │
  │ Read entries -- prints out │             │ Length -- counts the words│
- │  all diary entries         │             │ in the entries            ├────────────┐
- │                            │             │                           │            │
- │ Select -- works out length │             │                           │            │
- │  time to read diary entry  │             │                           │            │
- │  based on wpm and time     │             │                           │            │
- │  available                 │             │                           │            │
- └────────────────────────────┘             └────────────┬──────────────┘            │
-                                                         │                           │
-                                                         │                           │
-                                                         │                           │
-                                                         │                           │
-                                                         │                           │
-                                                         ▼                           │
-┌────────────────────────────┐              ┌───────────────────────────┐            │
-│       TODO LIST            │              │         TASK              │            │
-│ -------------------------  │              │ ------------------------  │            │
-│                            │              │                           │            │
-│ Record -- adds new tasks   │◄─────────────┤  Reviews diary entry      │            │
-│                            │              │  contents and searches    │            │
-│ Print -- returns list of   │              │  for todos. Each instance │            │
-│  tasks                     │              │  of task is derived from  │            │
-│                            │              │  each instance of diary   │            │
-│                            │              │  entry                    │            │
-│                            │              │                           │            │
-│                            │              │                           │            │
-│                            │              │                           │            │
-│                            │              │                           │            │
-└────────────────────────────┘              └───────────────────────────┘            │
-                                                                                     │
-                                                                                     │
-                                                                                     │
-                                                                                     │
-┌───────────────────────────┐                ┌──────────────────────────┐            │
-│       CONTACT LIST        │                │        CONTACT           │            │
-│ ------------------------  │                │ -----------------------  │            │
-│                           │                │                          │            │
-│ Record -- adds new number │                │ Reviews diary entry      │            │
-│                           │                │ contents and searches    │            │
-│ Print -- returns list of  │◄───────────────┤ for numbers. Each        │◄───────────┘
-│  contacts                 │                │ instand of contact is    │
-│                           │                │ derived from each        │
-│                           │                │instance of diary entry   │
-│                           │                │                          │
-│                           │                │                          │
-│                           │                │                          │
-└───────────────────────────┘                └──────────────────────────┘
+ │  all diary entries         │             │ in the entries            │
+ │                            │             │                           │
+ │ Select -- works out length │             │ Task -- reviews entry and │
+ │  time to read diary entry  │             │ searches for todos        │
+ │  based on wpm and time     │             │                           │
+ │  available                 │             │ Contact -- reviews entry  │
+ └────────────────────────────┘             │ and searches for numbers  │
+                                            │                           │
+                                            │                           │
+                                            └───────┬─────────────┬─────┘
+                                                    │             │
+                                                    │             │
+                                                    │             │
+┌────────────────────────────┐                      │             │
+│       TODO LIST            │                      │             │
+│ -------------------------  │                      │             │
+│                            │                      │             │
+│ Record -- adds new tasks   │                      │             │
+│                            │                      │             │
+│ Print -- returns list of   │                      │             │
+│  tasks                     │◄─────────────────────┘             │
+│                            │                                    │
+│                            │                                    │
+│                            │                                    │
+│                            │                                    │
+│                            │                                    │
+│                            │                                    │
+└────────────────────────────┘                                    │
+                                                                  │
+                                                                  │                                  ▼
+                                                                  │
+                                                                  │
+┌───────────────────────────┐                                     │
+│       CONTACT LIST        │                                     │
+│ ------------------------  │                                     │
+│                           │                                     │
+│ Record -- adds new number │                                     │
+│                           │                                     │
+│ Print -- returns list of  │◄────────────────────────────────────┘
+│  contacts                 │
+│                           │
+│                           │
+│                           │
+│                           │
+│                           │
+└───────────────────────────┘
 ```
 
 ```
@@ -126,7 +126,7 @@ class Diary
     # Returns list of diary entries that are readable in the legnth of time available 
   end
 
-  def select(diary_entry) # String - instance of DiaryEntry
+  def select(diary_entry) # Integer - instance of DiaryEntry
     # Returns date and contents of diary entry inputted
   end
 end
@@ -144,6 +144,16 @@ class DiaryEntry
     # Counts the words in the contents
     # Returns integer
   end
+
+  def todo
+    # It will check instance of diary_entry contents for 'todo'
+    # returns the 'todo'
+  end
+
+  def number
+    # It will check instance of diary_entry contents for number
+    # returns the number
+  end
 end
 
 class TodoList
@@ -151,7 +161,7 @@ class TodoList
     # ...
   end
 
-  def add(task) # task is an instance of Task class
+  def add(task) # task is from an instance of DiaryEntry class
     # Task is added to TodoList
     # Returns nothing
   end
@@ -161,40 +171,19 @@ class TodoList
   end
 end
 
-class Task # you could add this into the initalize in the DiaryEntry rather than as a separate task class
-  def initialize(diary_entry) # diary_entry is an instance of DiaryEntry
-    #...
-  end
-
-  def todo
-    # It will check instance of diary_entry contents for 'todo'
-    # returns the 'todo'
-  end
-end
 
 class ContactList
   def initialize
     #...
   end
 
-  def add(contact) # contact is an instance of Contact
+  def add(contact) # contact is from an instance of DiaryEntry class
     # Contact is added to ContactList
     # Nothing is returned
   end
 
   def print
     #Prints all the contacts in the list
-  end
-end
-
-class Contact # you could add this into the initalize in the DiaryEntry rather than as a separate contact class 
-  def initialize(diary_entry) # diary_entry is an instance of Diary Entry
-    #...
-  end
-
-  def number
-    # It will check instance of diary_entry contents for number
-    # returns the number
   end
 end
 
@@ -208,7 +197,7 @@ combinations that reflect the ways in which the system will be used._
 
 ```ruby
 
-# 1 Reads all diary entries
+# 1 Reads all diary entries that have been added
 diary = Diary.new
 entry_1 = DiaryEntry.new(121222, "dear diary, today this happened")
 entry_2 = DiaryEntry.new(101222, "hello diary this happened it was great")
@@ -218,19 +207,147 @@ diary.add(entry_1)
 diary.add(entry_2)
 diary.add(entry_3)
 diary.add(entry_4)
-diary.read => ["121222, dear diary, today this happened", "101222, hello diary this happened it was great", "111222, I met Dani today her number is 07123456789", "91222, I have a lot to do: wash the dishes"]
+diary.read => ["121222: dear diary, today this happened", "101222: hello diary this happened it was great", "111222: I met Dani today her number is 07123456789", "91222: I have a lot to do: wash the dishes"]
 
-# EXAMPLE
+# 2 Selects readable diary entries based on their word cound and returns a list of titles that are readable in the time frame (based on the time entered being the exact amount needed for the examples)
 
-# Gets all tracks
-library = MusicLibrary.new
-track_1 = Track.new("Carte Blanche", "Veracocha")
-track_2 = Track.new("Synaesthesia", "The Thrillseekers")
-library.add(track_1)
-library.add(track_2)
-library.all # => [track_1, track_2]
+diary = Diary.new
+entry_1 = DiaryEntry.new(121222, "dear diary, today this happened")
+entry_2 = DiaryEntry.new(101222, "hello diary this happened today")
+entry_3 = DiaryEntry.new(111222, "I met Dani today her number is 07123456789")
+entry_4 = DiaryEntry.new(91222, "I have a lot to do: wash the dishes")
+diary.add(entry_1)
+diary.add(entry_2)
+diary.add(entry_3)
+diary.add(entry_4)
+diary.readable(5, 1) => [121222, 101222]
+
+# Selects readable diary entries based on their word count and returns a list of titles that are readable in the time frame (based on the time entered being slightly over amount needed for examples)
+
+diary = Diary.new
+entry_1 = DiaryEntry.new(121222, "dear diary, today this happened")
+entry_2 = DiaryEntry.new(101222, "hello diary this happened today")
+entry_3 = DiaryEntry.new(111222, "I met Dani today her number is 07123456789")
+entry_4 = DiaryEntry.new(91222, "I have a lot to do: wash the dishes")
+diary.add(entry_1)
+diary.add(entry_2)
+diary.add(entry_3)
+diary.add(entry_4)
+diary.readable(7, 1) => [121222, 101222]
+
+# User input will select the diary entry to read based on the date input
+
+diary = Diary.new
+entry_1 = DiaryEntry.new(121222, "dear diary, today this happened")
+entry_2 = DiaryEntry.new(101222, "hello diary this happened today")
+entry_3 = DiaryEntry.new(111222, "I met Dani today her number is 07123456789")
+entry_4 = DiaryEntry.new(91222, "I have a lot to do: wash the dishes")
+diary.add(entry_1)
+diary.add(entry_2)
+diary.add(entry_3)
+diary.add(entry_4)
+diary.select(121222) => "dear diary, today this happened"
+
+# Search through entry to find todo and print 
+
+diary = Diary.new
+entry_1 = DiaryEntry.new(121222, "dear diary, today this happened")
+entry_2 = DiaryEntry.new(101222, "hello diary this happened today")
+entry_3 = DiaryEntry.new(111222, "I met Dani today her number is 07123456789")
+entry_4 = DiaryEntry.new(91222, "I have a lot to do: wash the dishes.")
+diary.add(entry_1)
+diary.add(entry_2)
+diary.add(entry_3)
+diary.add(entry_4)
+todo_4 = entry_4.todo
+todo_list = Todo.new
+todo_list.add(todo_4)
+todo_list.print => ["wash the dishes."]
+
+# Search through entry to find todo and print multiple
+diary = Diary.new
+entry_1 = DiaryEntry.new(121222, "dear diary, today I need to do: homework.")
+entry_4 = DiaryEntry.new(91222, "I have a lot to do: wash the dishes.")
+diary.add(entry_1)
+diary.add(entry_4)
+todo_4 = entry_4.todo
+todo_1 = entry_1.todo
+todo_list = Todo.new
+todo_list.add(todo_4)
+todo_list.add(todo_1)
+todo_list.print => ["wash the dishes.", "homework."]
+
+# Search through todo and print multiple - includes example where #todo is called on entry without value present
+
+diary = Diary.new
+entry_1 = DiaryEntry.new(121222, "dear diary, today I need to do: homework.")
+entry_2 = DiaryEntry.new(101222, "hello diary this happened today")
+entry_3 = DiaryEntry.new(111222, "I met Dani today her number is 07123456789")
+entry_4 = DiaryEntry.new(91222, "I have a lot to do: wash the dishes.")
+diary.add(entry_1)
+diary.add(entry_2)
+diary.add(entry_3)
+diary.add(entry_4)
+todo_4 = entry_4.todo
+todo_1 = entry_1.todo
+todo_2 = entry_2.todo
+todo_list = Todo.new
+todo_list.add(todo_4)
+todo_list.add(todo_1)
+todo_list.add(todo_2)
+todo_list.print => ["wash the dishes.", "homework."]
+
+# Search through entry to find contacts print one
+
+diary = Diary.new
+entry_1 = DiaryEntry.new(121222, "dear diary, today I need to do: homework.")
+entry_3 = DiaryEntry.new(111222, "I met Dani today her number is 07123456789")
+entry_4 = DiaryEntry.new(91222, "I have a lot to do: wash the dishes.")
+contact_1 = entry_3.number
+phonebook = ContactList.new
+phonebook.add(contact_1)
+phonebook.print => ["07123456789"]
+
+# Search through entry to find contacts prints multiple 
+
+diary = Diary.new
+entry_1 = DiaryEntry.new(121222, "dear diary, today I need to do: homework.")
+entry_2 = DiaryEntry.new(101222, "hello diary the plumber is called Dave: 07987654321")
+entry_3 = DiaryEntry.new(111222, "I met Dani today her number is 07123456789")
+entry_4 = DiaryEntry.new(91222, "I have a lot to do: wash the dishes.")
+diary.add(entry_1)
+diary.add(entry_2)
+diary.add(entry_3)
+diary.add(entry_4)
+contact_1 = entry_3.number
+contact_2 = entry_2.number
+phonebook = ContactList.new
+phonebook.add(contact_1)
+phonebook.add(contact_2)
+phonebook.print => ["07123456789", "07987654321"]
+
+# Search through number and print multiple - includes example where #number is called on entry without value present
+
+diary = Diary.new
+entry_1 = DiaryEntry.new(121222, "dear diary, today I need to do: homework.")
+entry_2 = DiaryEntry.new(101222, "hello diary the plumber is called Dave: 07987654321")
+entry_3 = DiaryEntry.new(111222, "I met Dani today her number is 07123456789")
+entry_4 = DiaryEntry.new(91222, "I have a lot to do: wash the dishes.")
+diary.add(entry_1)
+diary.add(entry_2)
+diary.add(entry_3)
+diary.add(entry_4)
+contact_1 = entry_3.number
+contact_2 = entry_2.number
+contact_3 = entry_1.number
+phonebook = ContactList.new
+phonebook.add(contact_1)
+phonebook.add(contact_2)
+phonebook.add(contact_3)
+phonebook.print => ["07123456789", "07987654321"]
+
+
 ```
-
 ## 4. Create Examples as Unit Tests
 
 _Create examples, where appropriate, of the behaviour of each relevant class at
@@ -239,9 +356,77 @@ a more granular level of detail._
 ```ruby
 # EXAMPLE
 
-# Constructs a track
-track = Track.new("Carte Blanche", "Veracocha")
-track.title # => "Carte Blanche"
+# DIARY ENTRY CLASS UNIT TEST
+
+# 1 #read_entry do
+entry_1 = DiaryEntry.new(121222, "dear diary, today this happened")
+entry_1.read_entry => "121222: dear diary, today this happened"
+
+# 2 #read_entry error
+entry_1 = DiaryEntry.new(121222, " ")
+entry_1.read_entry => "Error: need to enter contents"
+
+# 3 #read_date do
+entry_1 = DiaryEntry.new(121222, "dear diary, today this happened")
+expect(entry_1.read_date).to eq 121222
+
+# 4 #word_count do
+entry_1 = DiaryEntry.new(121222, "dear diary, today this happened")
+expect(entry_1.word_count).to eq 5
+
+# 5 #todo with to do value present do
+entry_4 = DiaryEntry.new(91222, "I have a lot to do: wash the dishes.")
+entry_4.todo => "wash the dishes."
+
+# 6 #todo without value present do
+entry_1 = DiaryEntry.new(121222, "dear diary, today this happened")
+entry_1.todo => nil 
+
+# 7 #number with to do value present do
+entry_3 = DiaryEntry.new(111222, "I met Dani today her number is 07123456789")
+entry_3.number => 07123456789
+
+# 8 #contact without value present do
+entry_1 = DiaryEntry.new(121222, "dear diary, today this happened")
+entry_1.number => nil 
+
+
+#------------------------------------------------------------------------
+
+# DIARY CLASS UNIT TEST
+
+# 1 Initially #read 
+diary = Diary.new
+diary.read => ""
+
+# 2 Initially #readable 
+diary = Diary.new
+diary.readable(2, 1) => []
+
+# 3 Initially #readable if minutes to read is less than 1
+diary = Diary.new
+diary.readable => "Error: check reading speed or minutes"
+
+# 4 Initially #readable if reading speed is less than 1
+diary = Diary.new
+diary.readable => "Error: check reading speed or minutes"
+
+#------------------------------------------------------------------------
+
+# TODO CLASS UNIT TEST
+
+# 1 Initially #read 
+todo_list = Todo.new
+todo.print = []
+
+#------------------------------------------------------------------------
+
+# CONTACT LIST CLASS UNIT TEST
+
+# 1 Initially #read 
+phonebook = ContactList.new
+phonebook.print = []
+
 ```
 
 _Encode each example as a test. You can add to the above list as you go._

@@ -30,7 +30,7 @@ class DiaryEntry
   def number
     # It will check instance of diary_entry contents for number
     # returns the number
-    return self.read_entry[/\d\d\d\d\d\d\d\d\d\d\d/] if self.read_entry.match(/\d\d\d\d\d\d\d\d\d\d\d/)
+    return self.read_entry[/\d{11}/] if self.read_entry.match(/\d{11}/)
   end
 end
 
